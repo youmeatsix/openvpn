@@ -14,7 +14,7 @@
 #
 # You should have received a copy of the GNU General Public License
 # along with this program. If not, see <https://www.gnu.org/licenses/>.
-
+import json
 import os
 
 import setuptools
@@ -24,7 +24,8 @@ NAME = 'openvpnclient'
 with open(os.path.join(os.path.dirname(__file__), "README.md"), "r") as fh:
     long_description = fh.read()
 
-__version__ = '0.1.3'
+with open('config.json') as config:
+    __version__ = json.load(config)['version']
 
 setuptools.setup(
     name=NAME,
