@@ -1,18 +1,21 @@
 {
-    "name": "OpenVPN Server",
-    "version": "1",
-    "slug": "openvpn",
-    "description": "Runs a openvpn server",
-    "startup": "before",
+    "name": "OpenVPN Client",
+    "version": "0.1",
+    "slug": "openvpn-client",
+    "description": "Connect Hassio to a remote VPN Server",
+    "startup": "application",
     "boot": "auto",
     "host_network": true,
     "privileged": ["NET_ADMIN"],
     "options": {
-      "config": "",
-      "key": ""
+      "ovpn-config" : ""
     },
     "schema": {
-      "config": "str",
-      "key": "str"
-    }
+      "ovpn-config" : "str"
+    },
+    "webui": "http://[HOST]:[PORT:5000]",
+    "ports": {
+      "5000/tcp" : 8050
+    },
+    "map" : ["share:rw"]
   }
