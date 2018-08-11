@@ -93,6 +93,12 @@ function wait_configuration(){
 
 init_tun_interface
 
+# create the config directory if it does not exist
+if [[ ! -d ${CLIENT_CONFIG_LOCATION} ]]
+then
+    mkdir -p ${CLIENT_CONFIG_LOCATION}
+fi
+
 setup_openvpn_config
 
 # start the web server as background task
