@@ -2,10 +2,10 @@ import os
 from flask import Flask, request, redirect, url_for, flash, render_template
 from werkzeug.utils import secure_filename
 
-app = Flask(__name__)
+application = Flask(__name__)
 
 
-@app.route('/', methods=['GET', 'POST'])
+@application.route('/', methods=['GET', 'POST'])
 def root():
     return '''
         <!doctype html>
@@ -18,7 +18,7 @@ def root():
         '''
 
 
-@app.route('/upload/', methods=['POST'])
+@application.route('/upload/', methods=['POST'])
 def upload():
     if request.method == 'POST':
         # check if the post request has the file part
@@ -30,7 +30,7 @@ def upload():
                 flash('No selected file')
                 return redirect(request.url)
             if file:
-                filename = secure_filename(os.path.join(app.config['UPLOAD_FOLDER'],file.filename))
+                filename = secure_filename(os.path.join(application.config['UPLOAD_FOLDER'],file.filename))
                 file.save(filename)
         return redirect(url_for('root'))
 
@@ -38,9 +38,9 @@ def upload():
 def main():
     upload_folder= '/share/openvpnclient'
 
-    app.config['UPLOAD_FOLDER'] = upload_folder
+    application.config['UPLOAD_FOLDER'] = upload_folder
 
-    app.run()
+    application.run()
 
 
 if __name__ == '__main__':

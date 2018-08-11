@@ -15,9 +15,11 @@
 # You should have received a copy of the GNU General Public License
 # along with this program. If not, see <https://www.gnu.org/licenses/>.
 
-import setuptools
 import os
 
+import setuptools
+
+NAME = 'openvpnclient'
 # read in the long description written in the README.md file
 with open(os.path.join(os.path.dirname(__file__), "README.md"), "r") as fh:
     long_description = fh.read()
@@ -25,7 +27,7 @@ with open(os.path.join(os.path.dirname(__file__), "README.md"), "r") as fh:
 __version__ = '0.1.2'
 
 setuptools.setup(
-    name='openvpnclient',
+    name=NAME,
     version=__version__,
     description='',
     long_description=long_description,
@@ -34,7 +36,7 @@ setuptools.setup(
     author_email='Lars@klitzke-web.de',
     entry_points={
         'console_scripts': [
-            'openvpnclient = openvpnclient.app:main',
+            NAME + ' = openvpnclient.app:main',
         ]
     },
     packages=setuptools.find_packages('.'),

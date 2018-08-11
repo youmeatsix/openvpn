@@ -7,13 +7,22 @@ ARG NAME=openvpnclient
 ENV LANG C.UTF-8
 
 # install openvpn package
-RUN apk add --update openvpn jq python3 bash
+RUN apk add --update --no-cache openvpn jq python3 bash python3-dev \
+    python \
+    python-dev \
+    build-base \
+    linux-headers \
+    pcre-dev \
+    py-pip \
+    curl \
+    openssl
 
 # setup python within an virtual environment
 RUN python3 -m venv /$NAME/venv && \
         source /$NAME/venv/bin/activate && \
         pip install --upgrade pip && \
-        pip install --upgrade setuptools
+        pip install --upgrade setuptools && \
+        pip install uwsgi
 
 WORKDIR /$NAME/
 

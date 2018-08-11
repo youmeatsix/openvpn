@@ -33,7 +33,7 @@ function init_tun_interface(){
 function setup_openvpn_config(){
 
     # split up the entries in the config option into lines and write to the client configuration file
-    cat /options.json | jq --raw-output '.options | .config[]' > ${CLIENT_CONFIG_LOCATION}/client.ovpn
+    cat /data/options.json | jq --raw-output '.options | .config[]' > ${CLIENT_CONFIG_LOCATION}/client.ovpn
 
     chmod 777 ${CLIENT_CONFIG_LOCATION}/client.ovpn
 
@@ -54,7 +54,7 @@ function start_webserver(){
     source /${NAME}/venv/bin/activate
 
     # now we the the entry point defined by the app
-    openvpnclient
+    uwsgi /$NAME/app/${NAME}.ini
 
 }
 
@@ -91,6 +91,7 @@ function wait_configuration(){
     done
 }
 
+
 init_tun_interface
 
 # create the config directory if it does not exist
@@ -99,10 +100,11 @@ then
     mkdir -p ${CLIENT_CONFIG_LOCATION}
 fi
 
+
 setup_openvpn_config
 
 # start the web server as background task
-nohup start_webserver &
+start_webserver
 
 # wait until the use uploaded the configuration files
 wait_configuration
