@@ -11,8 +11,11 @@
       "config" : [
         "client",
         "ca ca.crt",
+        "port 6123",
         "cert client.crt",
         "key client.key",
+        "auth SHA256",
+        "redirect-gateway",
         "dev tun",
         "proto tcp",
         "resolv-retry infinite",
