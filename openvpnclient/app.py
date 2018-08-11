@@ -3,6 +3,7 @@ from flask import Flask, request, redirect, url_for, flash, render_template
 from werkzeug.utils import secure_filename
 
 application = Flask(__name__)
+application.config['UPLOAD_FOLDER'] = '/share/openvpnclient'
 
 
 @application.route('/', methods=['GET', 'POST'])
@@ -35,16 +36,3 @@ def upload():
                 print("Save file {file} into {path}".format(file=file, path=filename))
                 file.save(filename)
         return redirect(url_for('root'))
-
-
-def main():
-    upload_folder= '/share/openvpnclient'
-
-    application.config['UPLOAD_FOLDER'] = upload_folder
-
-    application.run()
-
-
-if __name__ == '__main__':
-    main()
-
