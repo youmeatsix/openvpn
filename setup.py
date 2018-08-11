@@ -37,7 +37,7 @@ setuptools.setup(
     author_email='Lars@klitzke-web.de',
     entry_points={
         'console_scripts': [
-            NAME + ' = openvpnclient.app:main',
+            NAME + ' = openvpnclient.application:main',
         ]
     },
     packages=setuptools.find_packages('.'),
