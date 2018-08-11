@@ -4,6 +4,20 @@
 
 declare -r REQUIRED_FILES="client.crt client.key ca.crt"
 declare -r CLIENT_CONFIG_LOCATION=/share/openvpnclient
+declare -rx MY_NAME="$(basename $0)"
+
+########################################################################################################################
+# Log to stdout
+# Arguments:
+#   A string or a list of strings
+# Returns:
+#   None
+########################################################################################################################
+function log(){
+	local argv="$*"
+
+	echo "[$(date +%Y.%m.%d-%H:%M:%S) | $$ : ${MY_NAME} ] $argv"
+}
 
 ########################################################################################################################
 # Initialize the tun interface for OpenVPN if not already available
@@ -53,7 +67,9 @@ function start_webserver(){
     # The python virtual environment is inside the directory defined by $NAME in /
     source /${NAME}/venv/bin/activate
 
-    # now we the the entry point defined by the app
+    log "Start the web server."
+
+    # now we the the entry point defined by the application
     uwsgi /$NAME/app/${NAME}.ini
 
 }
@@ -69,6 +85,8 @@ function start_webserver(){
 #   None
 ########################################################################################################################
 function wait_configuration(){
+
+    log "Wait until the user uploads the files."
     # therefore, wait until the user upload the required certification files
     while true; do
 
@@ -77,6 +95,7 @@ function wait_configuration(){
         do
             if [[ ! -f ${CLIENT_CONFIG_LOCATION}/${file} ]]
             then
+                log "File ${CLIENT_CONFIG_LOCATION}/${file} not found"
                 failed=1
                 break
             fi
@@ -104,10 +123,11 @@ fi
 setup_openvpn_config
 
 # start the web server as background task
-start_webserver
+start_webserver &
 
 # wait until the use uploaded the configuration files
 wait_configuration
 
+log "Setup the VPN connection."
 # try to connect to the server using the used defined configuration
-openvpn --config ${CLIENT_CONFIG_LOCATION}/client.ovpn
+cd ${CLIENT_CONFIG_LOCATION} && openvpn --config client.ovpn
