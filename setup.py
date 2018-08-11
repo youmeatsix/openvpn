@@ -24,7 +24,7 @@ NAME = 'openvpnclient'
 with open(os.path.join(os.path.dirname(__file__), "README.md"), "r") as fh:
     long_description = fh.read()
 
-__version__ = '0.1.2'
+__version__ = '0.1.3'
 
 setuptools.setup(
     name=NAME,
