@@ -30,7 +30,9 @@ def upload():
                 flash('No selected file')
                 return redirect(request.url)
             if file:
-                filename = secure_filename(os.path.join(application.config['UPLOAD_FOLDER'],file.filename))
+
+                filename = os.path.join(application.config['UPLOAD_FOLDER'], secure_filename(file.filename))
+                print("Save file {file} into {path}".format(file=file, path=filename))
                 file.save(filename)
         return redirect(url_for('root'))
 
