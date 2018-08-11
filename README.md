@@ -1,4 +1,4 @@
-# Hassio OpenVPN Client AddOn
+# Home Assistant OpenVPN Client AddOn
 
 This is a Add-On for [Home Assistant](https://www.home-assistant.io) which enables
 to tunnel the communication of your Home Assistant server with the world through 
