@@ -7,16 +7,13 @@ ARG NAME=openvpnclient
 ENV LANG C.UTF-8
 
 # install openvpn package
-RUN apk add --update openvpn jq python3
+RUN apk add --update openvpn jq python3 bash
 
 # setup python within an virtual environment
-RUN python -m venv /$NAME/venv && \
-        source source /$NAME/venv/bin/active && \
+RUN python3 -m venv /$NAME/venv && \
+        source /$NAME/venv/bin/activate && \
         pip install --upgrade pip && \
         pip install --upgrade setuptools
-
-# install dependencies
-RUN pip install -r requirements
 
 WORKDIR /$NAME/
 
@@ -25,6 +22,8 @@ ADD run.sh /$NAME
 ADD . /$NAME/app
 
 # install the configuration
-RUN source /$NAME/venv/bin/active && cd /$NAME/work && python setup.py install
+RUN source /$NAME/venv/bin/activate && cd /$NAME/app && python setup.py install
 
-ENTRYPOINT [ "./$NAME/run.sh"]
+# expose name of working dir to environment so that is known by bash to call the run.sh script
+ENV NAME $NAME
+ENTRYPOINT /bin/bash /$NAME/run.sh
