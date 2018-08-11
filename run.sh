@@ -32,7 +32,8 @@ function init_tun_interface(){
 ########################################################################################################################
 function setup_openvpn_config(){
 
-    jq --raw-output '.ovpn-config' /options.json > ${CLIENT_CONFIG_LOCATION}/client.ovpn
+    # split up the entries in the config option into lines and write to the client configuration file
+    cat /options.json | jq --raw-output '.options | .config[]' > ${CLIENT_CONFIG_LOCATION}/client.ovpn
 
     chmod 777 ${CLIENT_CONFIG_LOCATION}/client.ovpn
 
