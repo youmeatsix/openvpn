@@ -47,7 +47,7 @@ function init_tun_interface(){
 function setup_openvpn_config(){
 
     # split up the entries in the config option into lines and write to the client configuration file
-    cat /data/options.json | tee >( jq --raw-output '.config[]' > ${CLIENT_CONFIG_LOCATION}/client.ovpn )
+    cat /data/options.json | jq --raw-output '.config[]' > ${CLIENT_CONFIG_LOCATION}/client.ovpn
 
     chmod 777 ${CLIENT_CONFIG_LOCATION}/client.ovpn
 
