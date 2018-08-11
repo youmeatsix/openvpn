@@ -2,7 +2,9 @@
 
 This is a Add-On for [Home Assistant](https://www.home-assistant.io) which enables
 to tunnel the communication of your Home Assistant server with the world through 
-a VPN connection. This Add-On is interesting especially for those you
+a VPN connection. 
+
+This Add-On is interesting especially for those of you
 having a Google Home Mini and/or Amazon Alex integrated into your local Home Assistant
 but don't want to expose it into the world and already have a trustworthy remote Server 
 with a SSL certificate (acquired e.g. using [Certbot](https://certbot.eff.org/)).
