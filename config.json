@@ -31,7 +31,6 @@
     "schema": {
       "config" : ["str"]
     },
-    "webui": "http://[HOST]:[PORT:5000]",
     "ports": {
       "5000/tcp" : 5000
     },
