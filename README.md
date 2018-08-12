@@ -6,8 +6,8 @@ a VPN connection.
 
 This Add-On is interesting especially for those of you
 having a Google Home Mini and/or Amazon Alex integrated into your local Home Assistant
-but don't want to expose it into the world and already have a trustworthy remote Server
-with a SSL certificate (acquired e.g. using [Certbot](https://certbot.eff.org/)).
+but don't want to expose it into the world and already have a trustworthy remote 
+Server with a SSL certificate (acquired e.g. using [Certbot](https://certbot.eff.org/)).
 
 The initial version of the Dockerfile to install the openvpn client was created
 by [TheSkorm](https://github.com/TheSkorm). Thanks for this. Base on his work, I've
