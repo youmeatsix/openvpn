@@ -52,3 +52,8 @@ def upload():
                 file.save(filename)
         return redirect(url_for('root'))
 
+
+
+if __name__ == '__main__':
+    application.run()
+
