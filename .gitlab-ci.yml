@@ -7,6 +7,7 @@ variables:
   ADDON_TARGET: openvpnclient
   DOCKER_DRIVER: overlay2
   DOCKER_HUB_ORG: larsklitzke
+  GITLAB: https://gitlab.klitzke-web.de
 
 stages:
   - preflight
@@ -44,8 +45,9 @@ stages:
       echo "${CI_JOB_TOKEN}" | docker login \
         --username gitlab-ci-token \
         --password-stdin \
-        gitlab.klitzke-web.de
-    - docker pull "gitlab.klitzke-web.de/${CI_PROJECT_PATH}/${ADDON_ARCH}:cache" || true
+        ${GITLAB}
+    - docker pull "${GITLAB}/${CI_PROJECT_PATH}/${ADDON_ARCH}:cache" \
+         || true
   script:
     - |
       docker build \
@@ -54,13 +56,13 @@ stages:
         --build-arg "BUILD_ARCH=${ADDON_ARCH}" \
         --build-arg "BUILD_REF=${CI_COMMIT_SHA}" \
         --build-arg "BUILD_VERSION=${CI_COMMIT_TAG:-${CI_COMMIT_SHA:0:7}}" \
-        --cache-from "gitlab.klitzke-web.de/${CI_PROJECT_PATH}/${ADDON_ARCH}:cache" \
+        --cache-from "${GITLAB}/${CI_PROJECT_PATH}/${ADDON_ARCH}:cache" \
         --tag \
-          "gitlab.klitzke-web.de/${CI_PROJECT_PATH}/${ADDON_ARCH}:${CI_COMMIT_SHA}" \
+          "${GITLAB}/${CI_PROJECT_PATH}/${ADDON_ARCH}:${CI_COMMIT_SHA}" \
         "${ADDON_TARGET}"
     - |
       docker push \
-        "gitlab.klitzke-web.de/${CI_PROJECT_PATH}/${ADDON_ARCH}:${CI_COMMIT_SHA}"
+        "${GITLAB}/${CI_PROJECT_PATH}/${ADDON_ARCH}:${CI_COMMIT_SHA}"
 # Generic scan template
 .scan: &scan
   <<: *dind
@@ -92,14 +94,14 @@ stages:
           exit 1
         fi
       done
-    - docker pull "gitlab.klitzke-web.de/${CI_PROJECT_PATH}/${ADDON_ARCH}:${CI_COMMIT_SHA}"
+    - docker pull "${GITLAB}/${CI_PROJECT_PATH}/${ADDON_ARCH}:${CI_COMMIT_SHA}"
   script:
     - |
       clair-scanner \
         -c http://docker:6060 \
         --ip $(hostname -i) \
         -w clair-whitelist.yml \
-        "gitlab.klitzke-web.de/${CI_PROJECT_PATH}/${ADDON_ARCH}:${CI_COMMIT_SHA}"
+        "${GITLAB}/${CI_PROJECT_PATH}/${ADDON_ARCH}:${CI_COMMIT_SHA}"
   tags:
     - scan
 
@@ -109,12 +111,12 @@ stages:
   stage: deploy
   before_script:
     - docker info
-    - docker pull "gitlab.klitzke-web.de/${CI_PROJECT_PATH}/${ADDON_ARCH}:${CI_COMMIT_SHA}"
+    - docker pull "${GITLAB}/${CI_PROJECT_PATH}/${ADDON_ARCH}:${CI_COMMIT_SHA}"
     - |
       echo "${CI_JOB_TOKEN}" | docker login \
         --username gitlab-ci-token \
         --password-stdin \
-        gitlab.klitzke-web.de
+        ${GITLAB}
     - |
       echo "${DOCKER_PASSWORD}" | docker login \
         --username "${DOCKER_LOGIN}" \
@@ -122,21 +124,21 @@ stages:
   script:
     - |
       docker tag \
-        "gitlab.klitzke-web.de/${CI_PROJECT_PATH}/${ADDON_ARCH}:${CI_COMMIT_SHA}" \
-        "gitlab.klitzke-web.de/${CI_PROJECT_PATH}/${ADDON_ARCH}:cache"
-    - docker push "gitlab.klitzke-web.de/${CI_PROJECT_PATH}/${ADDON_ARCH}:cache"
+        "${GITLAB}/${CI_PROJECT_PATH}/${ADDON_ARCH}:${CI_COMMIT_SHA}" \
+        "${GITLAB}/${CI_PROJECT_PATH}/${ADDON_ARCH}:cache"
+    - docker push "${GITLAB}/${CI_PROJECT_PATH}/${ADDON_ARCH}:cache"
     - TAG="${CI_COMMIT_TAG#v}"
     - TAG="${TAG:-${CI_COMMIT_SHA:0:7}}"
     - |
       docker tag \
-        "gitlab.klitzke-web.de/${CI_PROJECT_PATH}/${ADDON_ARCH}:${CI_COMMIT_SHA}" \
+        "${GITLAB}/${CI_PROJECT_PATH}/${ADDON_ARCH}:${CI_COMMIT_SHA}" \
         "${DOCKER_HUB_ORG}/${ADDON_SLUG}:${ADDON_ARCH}-${TAG}"
     - |
       docker push \
         "${DOCKER_HUB_ORG}/${ADDON_SLUG}:${ADDON_ARCH}-${TAG}"
     - |
       docker tag \
-        "gitlab.klitzke-web.de/${CI_PROJECT_PATH}/${ADDON_ARCH}:${CI_COMMIT_SHA}" \
+        "${GITLAB}/${CI_PROJECT_PATH}/${ADDON_ARCH}:${CI_COMMIT_SHA}" \
         "${DOCKER_HUB_ORG}/${ADDON_SLUG}-${ADDON_ARCH}:${TAG}"
     - |
       docker push \
