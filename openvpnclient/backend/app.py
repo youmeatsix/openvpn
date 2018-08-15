@@ -1,5 +1,6 @@
 import os
-from flask import Flask, request, redirect, url_for, flash, render_template
+
+from flask import Flask, request, render_template, jsonify
 from werkzeug.utils import secure_filename
 
 application = Flask(__name__, template_folder=os.path.join(os.path.dirname(os.path.dirname(__file__)), 'frontend'))
@@ -24,23 +25,26 @@ def root():
 @application.route('/ta_key/', methods=['POST'])
 def upload():
     if request.method == 'POST':
-        # check if the post request has the file part
-        files = request.files.getlist('file')
-        # if user does not select file, browser also
-        # submit a empty part without filename
-        for file in files:
-            if file.filename == '':
-                flash('No selected file')
-                return redirect(request.url)
-            if file:
 
-                filename = os.path.join(application.config['UPLOAD_FOLDER'], secure_filename(file.filename))
-                print("Save file {file} into {path}".format(file=file, path=filename))
-                file.save(filename)
-        return redirect(url_for('root'))
+        file = None
 
+        for f in _FILES:
+            if f in request.files:
+                # check if the post request has the file part
+                file = request.files.get(f)
+                # if user does not select file, browser also
+                # submit a empty part without filename
+
+        if not file and request.files:
+            # if the user send a file but that one is not supported, return a message with status code 204
+            return jsonify({'message': 'The file not supported'}), 204
+
+        filename = os.path.join(application.config['UPLOAD_FOLDER'], secure_filename(file.filename))
+        print("Save file {file} into {path}".format(file=file, path=filename))
+        file.save(filename)
+
+        return jsonify({'message': 'File {} saved'.format(file.filename)}), 200
 
 
 if __name__ == '__main__':
     application.run()
-

@@ -3,8 +3,8 @@
 <head>
     <!--Import Google Icon Font-->
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-    <!--Import materialize.css-->
-    <link type="text/css" rel="stylesheet" href="css/materialize.css" media="screen,projection"/>
+    <!--Import materialize.css--><!-- Compiled and minified CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0-rc.2/css/materialize.min.css">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/MaterialDesign-Webfont/2.0.46/css/materialdesignicons.min.css"
           rel="stylesheet">
@@ -75,7 +75,12 @@
         </div>
     </div>
 </div>
+
+
 <div class="container" id="openvpn-content" style="display:none">
+    <div class="fixed-action-btn" id="upload_btn">
+        <a class="btn-floating green waves-effect waves-light btn-large"><i class="material-icons">publish</i></a>
+    </div>
     <div class="row center-align">
         <div class="col">
             <h2 class="header">OpenVPN client configuration</h2>
@@ -102,7 +107,7 @@
                             <div class="col s10 m6 l6 offset-m3 offset-s1 offset-l3">
                                 <form method="post" action="ca_crt/" enctype="multipart/form-data">
                                     <div class="file-field input-field">
-                                        <div class="btn">
+                                        <div class="btn light-blue">
                                             <span>ca.crt</span>
                                             <input type="file" accept=".crt"/>
                                         </div>
@@ -137,19 +142,19 @@
                             <p class="flow-text">
                                 The second file is for decrypting data: the <i>client key</i> also known as the
                                 <i>private key</i>. You should never expose this to the public domain
-                                because anyone who own that file is able to decrypt data
+                                because anyone who owns that file is able to decrypt data.
                             </p>
                         </div>
                         <div class="row">
                             <div class="col m10 l6 xl4 offset-s1 offset-m1 offset-xl2">
                                 <form method="post" action="client_cert/" enctype="multipart/form-data">
                                     <div class="file-field input-field">
-                                        <div class="btn">
+                                        <div class="btn light-blue">
                                             <span>client.crt</span>
-                                            <input type="file" accept=".crt">
+                                            <input type="file" accept=".crt" name="client_cert">
                                         </div>
                                         <div class="file-path-wrapper">
-                                            <input class="file-path validate" type="text">
+                                            <input placeholder="client.crt" class="file-path validate" type="text">
                                         </div>
                                     </div>
                                 </form>
@@ -157,12 +162,12 @@
                             <div class="col m10 l6 xl4 offset-s1 offset-m1  ">
                                 <form method="post" action="client_key" enctype="multipart/form-data">
                                     <div class="file-field input-field">
-                                        <div class="btn">
+                                        <div class="btn light-blue">
                                             <span>client.key</span>
-                                            <input type="file" accept=".key">
+                                            <input type="file" accept=".key" name="client_key">
                                         </div>
                                         <div class="file-path-wrapper">
-                                            <input class="file-path validate" type="text">
+                                            <input placeholder="client.key" class="file-path validate" type="text">
                                         </div>
                                     </div>
                                 </form>
@@ -187,12 +192,12 @@
                             <div class="col s10 m6 l6 offset-m3 offset-s1 offset-l3">
                                 <form method="post" action="ta_key/" enctype="multipart/form-data">
                                     <div class="file-field input-field">
-                                        <div class="btn">
+                                        <div class="btn light-blue">
                                             <span>ta.key</span>
-                                            <input type="file">
+                                            <input type="file" accept=".key" name="ta_key">
                                         </div>
                                         <div class="file-path-wrapper">
-                                            <input class="file-path validate" type="text">
+                                            <input placeholder="ta.key" class="file-path validate" type="text">
                                         </div>
                                     </div>
                                 </form>
@@ -216,14 +221,50 @@
             });
         }, 1000);
 
+        $("#upload_btn").on("click", function (evt) {
+            $("form input[type='file']").each(function (evt) {
 
-        $("input[type='text']").on('change')(function (element) {
-            $(element).closest('form').submit();
+                let $input = $(this)[0];
+
+                // check if file selected
+                if ($input.files.length !== 0) {
+
+                    let $form = $(this).closest('form')[0];
+
+                    let form_data = new FormData();
+                    form_data.append( $input.files[0].name,  $input.files[0]);
+
+                    $.ajax({
+                        // use the action defined by the form this input field belongs to
+                        url: $form.action,
+                        // send via POST
+                        type: 'POST',
+                        // payload is our file
+                        data : form_data,
+
+                        // see https://stackoverflow.com/questions/12755945/jquery-and-html-formdata-returns-uncaught-typeerror-illegal-invocation
+                        processData: false,
+                        contentType: false,
+
+
+                        error: function(jqXHR, status, error){
+                            M.Toast('Failed to upload files due to error: '+error)
+                        },
+                        success: function(data, status, jqXHR){
+                            M.toast({html: data.message});
+                        }
+                    });
+                }
+            })
+        });
+
+        $("input[type='text']").on('change', function (evt) {
+            //$(this).closest('form').submit();
         });
     });
 
 
 </script>
 
-<!--JavaScript at end of body for optimized loading-->
-<script type="text/javascript" src="js/materialize.min.js"></script>
+<!-- Compiled and minified JavaScript -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0-rc.2/js/materialize.min.js"></script>
