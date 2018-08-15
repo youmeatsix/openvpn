@@ -12,23 +12,10 @@ _FILES = [
     'ta.key'
 ]
 
+
 @application.route('/', methods=['GET', 'POST'])
 def root():
-    return '''
-        <!doctype html>
-        <head>
-            <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/js/materialize.min.js"></script>
-            <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-            <title>OpenVPN Client</title>
-        </head>
-        <main>
-        <h1>Upload new File</h1>
-        <form method="post" action="upload/" enctype="multipart/form-data">
-          <p><input type="file" name="file" multiple>
-             <input type="submit" value="Upload">
-        </form>
-        </main>
-        '''
+    return render_template('index.html')
 
 
 @application.route('/ca_crt/', methods=['POST'])
