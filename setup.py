@@ -24,7 +24,7 @@ NAME = 'openvpnclient'
 with open(os.path.join(os.path.dirname(__file__), "README.md"), "r") as fh:
     long_description = fh.read()
 
-with open('config.json') as config:
+with open(os.path.join(os.path.dirname(__file__), 'config.json'), "r") as config:
     __version__ = json.load(config)['version']
 
 setuptools.setup(
