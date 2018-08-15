@@ -4,7 +4,7 @@ image: docker:latest
 variables:
   ADDON_GITHUB_REPO: larsklitzke/homeassistant-addons/addon-aircast
   ADDON_SLUG: openvpn-client
-  ADDON_TARGET: openvpn-client
+  ADDON_TARGET: openvpnclient
   DOCKER_DRIVER: overlay2
   DOCKER_HUB_ORG: larsklitzke
 
