@@ -2,8 +2,8 @@ import os
 from flask import Flask, request, redirect, url_for, flash, render_template
 from werkzeug.utils import secure_filename
 
-application = Flask(__name__)
-application.config['UPLOAD_FOLDER'] = '/share/openvpnclient'
+application = Flask(__name__, template_folder=os.path.join(os.path.dirname(os.path.dirname(__file__)), 'frontend'))
+application.config['UPLOAD_FOLDER'] = '/share/openvpnclient/'
 
 _FILES = [
     'ca.crt',
