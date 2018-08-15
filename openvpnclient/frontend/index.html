@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <!--Import Google Icon Font-->
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <!--Import materialize.css-->
+    <link type="text/css" rel="stylesheet" href="css/materialize.css" media="screen,projection"/>
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/MaterialDesign-Webfont/2.0.46/css/materialdesignicons.min.css"
+          rel="stylesheet">
+
+    <!--Let browser know website is optimized for mobile-->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <style>
+        html, body, wrapper {
+            height: 100%;
+        }
+    </style>
+
+</head>
+
+<body>
+<div class="container valign-wrapper .wrapper" id="openvpn-loading" style="width:100%; height: 100%;">
+    <div class="row center-align" style="width:100% !important;">
+        <div class="preloader-wrapper big active">
+            <div class="preloader-wrapper big active">
+                <div class="spinner-layer spinner-blue">
+                    <div class="circle-clipper left">
+                        <div class="circle"></div>
+                    </div>
+                    <div class="gap-patch">
+                        <div class="circle"></div>
+                    </div>
+                    <div class="circle-clipper right">
+                        <div class="circle"></div>
+                    </div>
+                </div>
+
+                <div class="spinner-layer spinner-red">
+                    <div class="circle-clipper left">
+                        <div class="circle"></div>
+                    </div>
+                    <div class="gap-patch">
+                        <div class="circle"></div>
+                    </div>
+                    <div class="circle-clipper right">
+                        <div class="circle"></div>
+                    </div>
+                </div>
+
+                <div class="spinner-layer spinner-yellow">
+                    <div class="circle-clipper left">
+                        <div class="circle"></div>
+                    </div>
+                    <div class="gap-patch">
+                        <div class="circle"></div>
+                    </div>
+                    <div class="circle-clipper right">
+                        <div class="circle"></div>
+                    </div>
+                </div>
+
+                <div class="spinner-layer spinner-green">
+                    <div class="circle-clipper left">
+                        <div class="circle"></div>
+                    </div>
+                    <div class="gap-patch">
+                        <div class="circle"></div>
+                    </div>
+                    <div class="circle-clipper right">
+                        <div class="circle"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="container" id="openvpn-content" style="display:none">
+    <div class="row center-align">
+        <div class="col">
+            <h2 class="header">OpenVPN client configuration</h2>
+            <p class="flow-text">
+                For connecting to a server, the OpenVPN clients requires at least three files. The fourth
+                optional file is for an additional authentication layer (TLS) only required if the server security was
+                <a target="_blank" href="https://community.openvpn.net/openvpn/wiki/Hardening">hardened</a>
+                (which is recommended).
+            </p>
+
+            <div class="card hoverable">
+                <div class="card-stacked">
+                    <div class="card-content">
+                        <h4>Root certificate authority (CA) certificate</h4>
+                        <div class="row">
+                            <p class="flow-text">
+                                The <i>ca.crt</i> file is the <a target="_blank"
+                                                                 href="https://en.wikipedia.org/wiki/Certificate_authority">
+                                certificate authority</a> (CA) certificate which is used to
+                                identify the entitiy who has issued your private certificates.
+                            </p>
+                        </div>
+                        <div class="row">
+                            <div class="col s10 m6 l6 offset-m3 offset-s1 offset-l3">
+                                <form method="post" action="ca_crt/" enctype="multipart/form-data">
+                                    <div class="file-field input-field">
+                                        <div class="btn">
+                                            <span>ca.crt</span>
+                                            <input type="file" accept=".crt"/>
+                                        </div>
+                                        <div class="file-path-wrapper">
+                                            <input placeholder="ca.crt" class="file-path validate" type="text">
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <br/>
+            <div class="card hoverable">
+                <div class="card-stacked">
+                    <div class="card-content">
+                        <h4>Client Certificates</h4>
+                        <div class="row">
+                            <p class="flow-text">
+                                Each client who wants to connect to a VPN server has to generate a pair of keys
+                                for
+                                the identification and the encryption or let the OpenVPN server
+                                <a href="https://openvpn.net/index.php/open-source/documentation/howto.html#pki">create
+                                    both keys</a> for the client.
+                                The first one is the <i>client certificate</i> or <i>client.crt</i> (also called
+                                public key) which is required by other entities to encrypt data in such a way
+                                that
+                                only
+                                that entity is able to decrypt it.
+                            </p>
+                            <p class="flow-text">
+                                The second file is for decrypting data: the <i>client key</i> also known as the
+                                <i>private key</i>. You should never expose this to the public domain
+                                because anyone who own that file is able to decrypt data
+                            </p>
+                        </div>
+                        <div class="row">
+                            <div class="col m10 l6 xl4 offset-s1 offset-m1 offset-xl2">
+                                <form method="post" action="client_cert/" enctype="multipart/form-data">
+                                    <div class="file-field input-field">
+                                        <div class="btn">
+                                            <span>client.crt</span>
+                                            <input type="file" accept=".crt">
+                                        </div>
+                                        <div class="file-path-wrapper">
+                                            <input class="file-path validate" type="text">
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                            <div class="col m10 l6 xl4 offset-s1 offset-m1  ">
+                                <form method="post" action="client_key" enctype="multipart/form-data">
+                                    <div class="file-field input-field">
+                                        <div class="btn">
+                                            <span>client.key</span>
+                                            <input type="file" accept=".key">
+                                        </div>
+                                        <div class="file-path-wrapper">
+                                            <input class="file-path validate" type="text">
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <br/>
+            <div class="card hoverable">
+                <div class="card-stacked">
+                    <div class="card-content">
+                        <h4>TLS Authentification</h4>
+                        <div class="row">
+                            <p class="flow-text">
+                                You're server may be configured to only accept messages which are signed with a specific
+                                pre-shared TLS key. This for instance helps to prevent of denial-of-service (DOS)
+                                attacks.
+                            </p>
+                        </div>
+                        <div class="row">
+                            <div class="col s10 m6 l6 offset-m3 offset-s1 offset-l3">
+                                <form method="post" action="ta_key/" enctype="multipart/form-data">
+                                    <div class="file-field input-field">
+                                        <div class="btn">
+                                            <span>ta.key</span>
+                                            <input type="file">
+                                        </div>
+                                        <div class="file-path-wrapper">
+                                            <input class="file-path validate" type="text">
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+
+<script>
+    $(document).ready(function () {
+        setTimeout(function () {
+            $("#openvpn-loading").fadeOut(300, function () {
+                $("#openvpn-content").fadeIn(300);
+            });
+        }, 1000);
+
+
+        $("input[type='text']").on('change')(function (element) {
+            $(element).closest('form').submit();
+        });
+    });
+
+
+</script>
+
+<!--JavaScript at end of body for optimized loading-->
+<script type="text/javascript" src="js/materialize.min.js"></script>
