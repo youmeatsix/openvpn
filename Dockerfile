@@ -21,18 +21,17 @@ RUN apk add --update --no-cache openvpn jq python3 bash python3-dev \
 RUN python3 -m venv /$NAME/venv && \
         source /$NAME/venv/bin/activate && \
         pip install --upgrade pip && \
-        pip install --upgrade setuptools && \
-        pip install uwsgi
-
-WORKDIR /$NAME/
+        pip install --upgrade setuptools uwsgi
 
 ADD run.sh /$NAME
 
 ADD . /$NAME/app
 
-# install the configuration
-RUN source /$NAME/venv/bin/activate && cd /$NAME/app && python setup.py install
+WORKDIR /$NAME/app
 
-# expose name of working dir to environment so that is known by bash to call the run.sh script
+# install the configuration
+RUN source /$NAME/venv/bin/activate && python setup.py install
+
+# expose name of working dir to environment
 ENV NAME $NAME
 ENTRYPOINT /bin/bash /$NAME/run.sh
