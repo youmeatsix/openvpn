@@ -23,9 +23,9 @@ RUN python3 -m venv /$NAME/venv && \
         pip install --upgrade pip && \
         pip install --upgrade setuptools uwsgi
 
-ADD run.sh /$NAME
+COPY run.sh /$NAME
 
-ADD . /$NAME/app
+COPY . /$NAME/app
 
 WORKDIR /$NAME/app
 
