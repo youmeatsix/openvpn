@@ -226,15 +226,6 @@ stages:
   except:
     - /^(?!master).+@/
 
-# Preflight jobs
-hadolint:
-  <<: *preflight
-  image: hadolint/hadolint:v1.6.6
-  before_script:
-    - hadolint --version
-  script:
-    - ls -l ;ls -l ${ADDON_TARGET};  hadolint "Dockerfile"
-
 shellcheck:
   <<: *preflight
   image:
