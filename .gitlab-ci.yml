@@ -255,7 +255,7 @@ yamllint:
   before_script:
     - yamllint --version
   script:
-    - yamllint .
+    - yamllint . -d yamllint.yml
 
 jsonlint:
   <<: *preflight
