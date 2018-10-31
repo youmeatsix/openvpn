@@ -233,7 +233,7 @@ hadolint:
   before_script:
     - hadolint --version
   script:
-    - ls -l ;ls -l ${ADDON_TARGET};  hadolint "${ADDON_TARGET}/Dockerfile"
+    - ls -l ;ls -l ${ADDON_TARGET};  hadolint "Dockerfile"
 
 shellcheck:
   <<: *preflight
