@@ -42,9 +42,9 @@ stages:
         docker run --rm --privileged hassioaddons/qemu-user-static:latest
       fi
     - |
-      echo "${CI_JOB_TOKEN}" | docker login \
+      docker login \
         --username gitlab-ci-token \
-        --password-stdin \
+        --password "${CI_JOB_TOKEN}" \
         ${GITLAB}
     - |
       if [ "${ADDON_QEMU}" = "true" ] && [ "$(apk --print-arch)" = "aarch64" ]; then
@@ -68,10 +68,9 @@ stages:
         --build-arg "BUILD_ARCH=${ADDON_ARCH}" \
         --build-arg "BUILD_REF=${CI_COMMIT_SHA}" \
         --build-arg "BUILD_VERSION=${CI_COMMIT_TAG:-${CI_COMMIT_SHA:0:7}}" \
-        --cache-from "${GITLAB}/${CI_PROJECT_PATH}/${ADDON_ARCH}:cache" \
         --tag \
           "${CI_PROJECT_PATH}/${ADDON_ARCH}:${CI_COMMIT_SHA}" \
-        "${ADDON_TARGET}"
+        .
     - |
       docker push \
         "${GITLAB}/${CI_PROJECT_PATH}/${ADDON_ARCH}:${CI_COMMIT_SHA}"
