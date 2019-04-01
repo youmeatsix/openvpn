@@ -3,8 +3,18 @@
 # Start the web server and setup the VPN connection
 
 declare -r REQUIRED_FILES="client.crt client.key ca.crt"
-declare -r CLIENT_CONFIG_LOCATION=/share/openvpnclient
 declare -rx MY_NAME="$(basename $0)"
+
+# Points to the root dir of the virtual environment
+declare -rx ROOT_DIR="$(dirname $(dirname $0))"
+
+# points to the location of the configuration files
+declare -r CLIENT_CONFIG_LOCATION=$ROOT_DIR/share/openvpnclient
+
+# The uwsgi configuration file
+declare -r UWSGI_CONFIG_FILE=${CLIENT_CONFIG_LOCATION}/openvpnclient.ini
+
+declare -r OPENVPN_OPTIONS=${CLIENT_CONFIG_LOCATION}/options.json
 
 ########################################################################################################################
 # Log to stdout
@@ -47,7 +57,7 @@ function init_tun_interface(){
 function setup_openvpn_config(){
 
     # split up the entries in the config option into lines and write to the client configuration file
-    cat /data/options.json | jq --raw-output '.config[]' > ${CLIENT_CONFIG_LOCATION}/client.ovpn
+    cat ${OPENVPN_OPTIONS} | jq --raw-output '.config[]' > ${CLIENT_CONFIG_LOCATION}/client.ovpn
 
     chmod 777 ${CLIENT_CONFIG_LOCATION}/client.ovpn
 
@@ -65,12 +75,12 @@ function setup_openvpn_config(){
 function start_webserver(){
 
     # The python virtual environment is inside the directory defined by $NAME in /
-    source /${NAME}/venv/bin/activate
+    source $ROOT_DIR/bin/activate
 
     log "Start the web server."
 
     # now we the the entry point defined by the application
-    uwsgi /$NAME/app/${NAME}.ini
+    uwsgi ${UWSGI_CONFIG_FILE} --home ${ROOT_DIR}
 
 }
 

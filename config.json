@@ -1,6 +1,6 @@
 {
     "name": "OpenVPN Client",
-    "version": "0.2.6",
+    "version": "0.2.7",
     "slug": "openvpn-client",
     "description": "Connect Hassio to a remote VPN Server",
     "startup": "application",

@@ -1,10 +1,12 @@
 import os
+import sys
 
 from flask import Flask, request, render_template, jsonify
 from werkzeug.utils import secure_filename
 
-application = Flask(__name__, template_folder=os.path.join(os.path.dirname(os.path.dirname(__file__)), 'frontend'))
-application.config['UPLOAD_FOLDER'] = '/share/openvpnclient/'
+application = Flask(__name__, template_folder=os.path.abspath(
+    os.path.join(os.path.dirname(os.path.dirname(__file__)), 'frontend')))
+application.config['UPLOAD_FOLDER'] = os.path.join(sys.prefix, 'share', 'openvpnclient')
 
 _FILES = [
     'ca.crt',
@@ -46,5 +48,6 @@ def upload():
         return jsonify({'message': 'File {} saved'.format(file.filename)}), 200
 
 
-if __name__ == '__main__':
+def run():
     application.run()
+
