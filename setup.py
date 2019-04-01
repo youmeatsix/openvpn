@@ -49,7 +49,7 @@ setuptools.setup(
     scripts=['run.sh'],
     data_files = [
         ('share/{}'.format(NAME), [
-            'options.json',
+            'config.json',
             'openvpnclient.ini'
         ])
     ]
