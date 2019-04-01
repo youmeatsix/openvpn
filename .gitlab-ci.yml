@@ -46,7 +46,6 @@ stages:
         --username gitlab-ci-token \
         --password-stdin \
         ${GITLAB}
-    - docker pull "registry.gitlab.com/${CI_PROJECT_PATH}/${ADDON_ARCH}:cache" || true
     - |
       if [ "${ADDON_QEMU}" = "true" ] && [ "$(apk --print-arch)" = "aarch64" ]; then
         apk --no-cache add curl
@@ -71,7 +70,7 @@ stages:
         --build-arg "BUILD_VERSION=${CI_COMMIT_TAG:-${CI_COMMIT_SHA:0:7}}" \
         --cache-from "${GITLAB}/${CI_PROJECT_PATH}/${ADDON_ARCH}:cache" \
         --tag \
-          "${GITLAB}/${CI_PROJECT_PATH}/${ADDON_ARCH}:${CI_COMMIT_SHA}" \
+          "${CI_PROJECT_PATH}/${ADDON_ARCH}:${CI_COMMIT_SHA}" \
         "${ADDON_TARGET}"
     - |
       docker push \
