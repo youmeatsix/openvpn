@@ -283,7 +283,7 @@ markdownlint:
     - gem install mdl
     - mdl --version
   script:
-    - mdl --style all --warnings .
+    - mdl --style mdl_style.rb --warnings .
 
 # Build Jobs
 build:armhf:

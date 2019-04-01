@@ -29,6 +29,4 @@ panel_iframe:
     url: http://<server>:8090
 
 ```
-
-with `<server>` pointing to the address of your Home Assistant server. 
-
+with `<server>` pointing to the address of your Home Assistant server.
