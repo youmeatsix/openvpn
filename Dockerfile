@@ -8,8 +8,6 @@ ENV LANG C.UTF-8
 
 # install openvpn package
 RUN apk add --update --no-cache openvpn jq python3 bash python3-dev \
-    python \
-    python-dev \
     build-base \
     linux-headers \
     pcre-dev \
@@ -21,17 +19,17 @@ RUN apk add --update --no-cache openvpn jq python3 bash python3-dev \
 RUN python3 -m venv /$NAME/venv && \
         source /$NAME/venv/bin/activate && \
         pip install --upgrade pip && \
-        pip install --upgrade setuptools uwsgi
+        pip install --upgrade setuptools wheel
 
-COPY run.sh /$NAME
+COPY . /tmp
 
-COPY . /$NAME/app
+WORKDIR /$NAME/venv/
 
-WORKDIR /$NAME/app
-
-# install the configuration
-RUN source /$NAME/venv/bin/activate && python setup.py install
+RUN source /$NAME/venv/bin/activate && \
+    cd /tmp && python /tmp/setup.py bdist_wheel &&\
+    pip install /tmp/dist/*
 
 # expose name of working dir to environment
 ENV NAME $NAME
-ENTRYPOINT /bin/bash /$NAME/run.sh
+
+ENTRYPOINT /bin/bash /$NAME/venv/bin/run.sh

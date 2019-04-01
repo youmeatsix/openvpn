@@ -37,11 +37,20 @@ setuptools.setup(
     author_email='Lars@klitzke-web.de',
     entry_points={
         'console_scripts': [
-            NAME + ' = openvpnclient.application:main',
+            NAME + ' = openvpnclient.backend.app:run',
         ]
     },
-    packages=setuptools.find_packages('.'),
+    include_package_data=True,
+    packages=setuptools.find_packages(),
     install_requires=[
-        'flask',
+        'Flask',
+        'uwsgi'
     ],
+    scripts=['run.sh'],
+    data_files = [
+        ('share/{}'.format(NAME), [
+            'options.json',
+            'openvpnclient.ini'
+        ])
+    ]
 )

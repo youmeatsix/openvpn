@@ -26,7 +26,7 @@ panel_iframe:
   openvpn:
     title: OpenVPN
     icon: mdi:cloud-check
-    url: http://<server>:5000
+    url: http://<server>:8090
 
 ```
 
