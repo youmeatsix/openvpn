@@ -23,8 +23,6 @@ RUN python3 -m venv /$NAME/venv && \
 
 COPY . /tmp
 
-RUN ls -la /tmp
-
 RUN source /$NAME/venv/bin/activate && \
     cd /tmp && python /tmp/setup.py bdist_wheel &&\
     pip install /tmp/dist/*
