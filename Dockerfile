@@ -23,11 +23,13 @@ RUN python3 -m venv /$NAME/venv && \
 
 COPY . /tmp
 
-WORKDIR /$NAME/venv/
+RUN ls -la /tmp
 
 RUN source /$NAME/venv/bin/activate && \
     cd /tmp && python /tmp/setup.py bdist_wheel &&\
     pip install /tmp/dist/*
+
+WORKDIR /$NAME/venv/
 
 # expose name of working dir to environment
 ENV NAME $NAME
