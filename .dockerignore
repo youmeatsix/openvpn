@@ -1,8 +1,6 @@
 ## This file ensures that the build context keeps clean.
 ## Therefore, add files and directories to this file which are not required for the docker image creation.
 
-# all .in files
-*.in
 
 # exclude the build directory which is used by cmake
 build/*
