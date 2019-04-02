@@ -5,6 +5,7 @@
     "description": "Connect Hassio to a remote VPN Server",
     "startup": "application",
     "boot": "auto",
+    "arch": ["armhf", "armv7", "aarch64", "amd64", "i386"],
     "host_network": true,
     "privileged": ["NET_ADMIN"],
     "options": {
