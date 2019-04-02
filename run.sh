@@ -64,7 +64,7 @@ function init_tun_interface(){
 function setup_openvpn_config(){
 
     # split up the entries in the config option into lines and write to the client configuration file
-    cat ${OPENVPN_OPTIONS} | jq --raw-output '.options.config[]' > ${OPENVPN_CONFIG}
+    cat ${OPENVPN_OPTIONS} | jq --raw-output '.config[]' > ${OPENVPN_CONFIG}
 
     chmod 777 ${OPENVPN_CONFIG}
 
@@ -92,6 +92,37 @@ function start_webserver(){
 }
 
 ########################################################################################################################
+# Check if all required files are available.
+# Globals:
+#   REQUIRED_FILES
+#   STORAGE_LOCATION
+# Arguments:
+#   None
+# Returns:
+#   0 if all files are available and 1 otherwise
+########################################################################################################################
+function check_files_available(){
+    failed=0
+    for file in ${REQUIRED_FILES}
+    do
+        if [[ ! -f ${STORAGE_LOCATION}/${file} ]]
+        then
+            log "File ${STORAGE_LOCATION}/${file} not found"
+            failed=1
+            break
+        fi
+    done
+
+    if [[ ${failed} == 0 ]]
+    then
+        return 0
+    else
+        return 1
+    fi
+
+
+}
+########################################################################################################################
 # Wait until the user has uploaded all required certificates and keys in order to setup the VPN connection.
 # Globals:
 #   REQUIRED_FILES
@@ -107,18 +138,9 @@ function wait_configuration(){
     # therefore, wait until the user upload the required certification files
     while true; do
 
-        failed=0
-        for file in ${REQUIRED_FILES}
-        do
-            if [[ ! -f ${STORAGE_LOCATION}/${file} ]]
-            then
-                log "File ${STORAGE_LOCATION}/${file} not found"
-                failed=1
-                break
-            fi
-        done
+        check_files_available
 
-        if [[ ${failed} == 0 ]]
+        if [[ $? == 0 ]]
         then
             break
         fi
@@ -146,6 +168,9 @@ start_webserver &
 # wait until the user uploaded the configuration files
 wait_configuration
 
-log "Setup the VPN connection."
+log "Setup the VPN connection with the following OpenVPN configuration."
+
+cat ${OPENVPN_CONFIG}
+
 # try to connect to the server using the used defined configuration
 cd ${STORAGE_LOCATION} && openvpn --config ${OPENVPN_CONFIG}
