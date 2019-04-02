@@ -8,15 +8,20 @@ declare -rx MY_NAME="$(basename $0)"
 # Points to the root dir of the virtual environment
 declare -rx ROOT_DIR="$(dirname $(dirname $0))"
 
+# Storage location is at /data/ for homeassistant docker containers
+declare -r STORAGE_LOCATION=/data/
+
 # points to the location of the configuration files
 declare -r CLIENT_CONFIG_LOCATION=$ROOT_DIR/share/openvpnclient
 
 # The uwsgi configuration file
 declare -r UWSGI_CONFIG_FILE=${CLIENT_CONFIG_LOCATION}/openvpnclient.ini
 
-declare -r OPENVPN_OPTIONS=${CLIENT_CONFIG_LOCATION}/config.json
+# The options file is in the persistent storage of the docker container /data/
+declare -r OPENVPN_OPTIONS=${STORAGE_LOCATION}/options.json
 
-declare -r OPENVPN_CONFIG=${CLIENT_CONFIG_LOCATION}/client.ovpn
+# Save the OpenVPN configuration in the persistent storage
+declare -r OPENVPN_CONFIG=${STORAGE_LOCATION}/client.ovpn
 
 ########################################################################################################################
 # Log to stdout
@@ -105,9 +110,9 @@ function wait_configuration(){
         failed=0
         for file in ${REQUIRED_FILES}
         do
-            if [[ ! -f ${CLIENT_CONFIG_LOCATION}/${file} ]]
+            if [[ ! -f ${STORAGE_LOCATION}/${file} ]]
             then
-                log "File ${CLIENT_CONFIG_LOCATION}/${file} not found"
+                log "File ${STORAGE_LOCATION}/${file} not found"
                 failed=1
                 break
             fi
@@ -127,9 +132,9 @@ function wait_configuration(){
 init_tun_interface
 
 # create the config directory if it does not exist
-if [[ ! -d ${CLIENT_CONFIG_LOCATION} ]]
+if [[ ! -d ${STORAGE_LOCATION} ]]
 then
-    mkdir -p ${CLIENT_CONFIG_LOCATION}
+    mkdir -p ${STORAGE_LOCATION}
 fi
 
 
@@ -143,4 +148,4 @@ wait_configuration
 
 log "Setup the VPN connection."
 # try to connect to the server using the used defined configuration
-cd ${CLIENT_CONFIG_LOCATION} && openvpn --config ${OPENVPN_CONFIG}
+cd ${STORAGE_LOCATION} && openvpn --config ${OPENVPN_CONFIG}
