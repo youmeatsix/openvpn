@@ -6,7 +6,10 @@ from werkzeug.utils import secure_filename
 
 application = Flask(__name__, template_folder=os.path.abspath(
     os.path.join(os.path.dirname(os.path.dirname(__file__)), 'frontend')))
-application.config['UPLOAD_FOLDER'] = os.path.join(sys.prefix, 'share', 'openvpnclient')
+
+
+# upload files to the persistent storage within the docker container this application will run in
+application.config['UPLOAD_FOLDER'] = '/data/'
 
 _FILES = [
     'ca.crt',
