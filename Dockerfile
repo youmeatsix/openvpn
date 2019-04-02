@@ -18,14 +18,14 @@ RUN apk add --update --no-cache openvpn jq python3 bash python3-dev \
 # setup python within an virtual environment
 RUN python3 -m venv /$NAME/venv && \
         source /$NAME/venv/bin/activate && \
-        pip install --upgrade pip && \
-        pip install --upgrade setuptools wheel
+        pip install --upgrade pip --no-cache-dir && \
+        pip install --upgrade  --no-cache-dir setuptools wheel
 
-COPY . /tmp
+COPY . /tmp/$NAME
 
 RUN source /$NAME/venv/bin/activate && \
-    cd /tmp && python /tmp/setup.py bdist_wheel &&\
-    pip install /tmp/dist/*
+    cd /tmp/$NAME && python setup.py bdist_wheel &&\
+    pip install  --no-cache-dir dist/* && cd / && rm -r /tmp/$NAME
 
 WORKDIR /$NAME/venv/
 
