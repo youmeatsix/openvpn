@@ -14,7 +14,9 @@ declare -r CLIENT_CONFIG_LOCATION=$ROOT_DIR/share/openvpnclient
 # The uwsgi configuration file
 declare -r UWSGI_CONFIG_FILE=${CLIENT_CONFIG_LOCATION}/openvpnclient.ini
 
-declare -r OPENVPN_OPTIONS=${CLIENT_CONFIG_LOCATION}/options.json
+declare -r OPENVPN_OPTIONS=${CLIENT_CONFIG_LOCATION}/config.json
+
+declare -r OPENVPN_CONFIG=${CLIENT_CONFIG_LOCATION}/client.ovpn
 
 ########################################################################################################################
 # Log to stdout
@@ -57,9 +59,9 @@ function init_tun_interface(){
 function setup_openvpn_config(){
 
     # split up the entries in the config option into lines and write to the client configuration file
-    cat ${OPENVPN_OPTIONS} | jq --raw-output '.config[]' > ${CLIENT_CONFIG_LOCATION}/client.ovpn
+    cat ${OPENVPN_OPTIONS} | jq --raw-output '.options.config[]' > ${OPENVPN_CONFIG}
 
-    chmod 777 ${CLIENT_CONFIG_LOCATION}/client.ovpn
+    chmod 777 ${OPENVPN_CONFIG}
 
 }
 
@@ -118,6 +120,7 @@ function wait_configuration(){
 
         sleep 5
     done
+    log "All files available!"
 }
 
 
@@ -135,9 +138,9 @@ setup_openvpn_config
 # start the web server as background task
 start_webserver &
 
-# wait until the use uploaded the configuration files
+# wait until the user uploaded the configuration files
 wait_configuration
 
 log "Setup the VPN connection."
 # try to connect to the server using the used defined configuration
-cd ${CLIENT_CONFIG_LOCATION} && openvpn --config client.ovpn
+cd ${CLIENT_CONFIG_LOCATION} && openvpn --config ${OPENVPN_CONFIG}
