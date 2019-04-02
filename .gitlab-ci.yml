@@ -5,6 +5,7 @@ variables:
   ADDON_GITHUB_REPO: larsklitzke/homeassistant-addons/addon-openvpnclient
   ADDON_SLUG: homeassistant-openvpnclient
   ADDON_TARGET: openvpnclient
+  ADDON_QEMU: "true"
   DOCKER_DRIVER: overlay2
   DOCKER_HUB_ORG: larsklitzke
   GITLAB: https://gitlab.klitzke-web.de
@@ -38,7 +39,7 @@ stages:
   before_script:
     - docker info
     - |
-      if [ "$(apk --print-arch)" = "amd64" ]; then
+      if [ "$(apk --print-arch)" = "amd64" ] || [ "$(apk --print-arch)" = "x86_64" ]; then
         docker run --rm --privileged hassioaddons/qemu-user-static:latest
       fi
     - |
@@ -71,9 +72,8 @@ stages:
         --tag \
           "${CI_PROJECT_PATH}/${ADDON_ARCH}:${CI_COMMIT_SHA}" \
         .
-    - |
-      docker push \
-        "${GITLAB}/${CI_PROJECT_PATH}/${ADDON_ARCH}:${CI_COMMIT_SHA}"
+    - docker push "${GITLAB}/${CI_PROJECT_PATH}/${ADDON_ARCH}:${CI_COMMIT_SHA}"
+
 # Generic scan template
 .scan: &scan
   <<: *dind
@@ -301,7 +301,7 @@ build:armhf:
   <<: *build
   variables:
     ADDON_ARCH: armhf
-    FROM: hassioaddons/ubuntu-base-armhf:2.0.0
+    FROM: hassioaddons/base-armhf:latest
   tags:
     - build
     - armhf
@@ -310,7 +310,7 @@ build:aarch64:
   <<: *build
   variables:
     ADDON_ARCH: aarch64
-    FROM: hassioaddons/ubuntu-base-aarch64:2.0.0
+    FROM: hassioaddons/base-aarch64:latest
   tags:
     - build
     - aarch64
@@ -319,7 +319,7 @@ build:i386:
   <<: *build
   variables:
     ADDON_ARCH: i386
-    FROM: hassioaddons/ubuntu-base-i386:2.0.0
+    FROM: hassioaddons/base-i386:latest
   tags:
     - build
     - i386
@@ -328,7 +328,7 @@ build:amd64:
   <<: *build
   variables:
     ADDON_ARCH: amd64
-    FROM: hassioaddons/ubuntu-base-amd64:2.0.0
+    FROM: hassioaddons/base-amd64:latest
   tags:
     - build
     - amd64
