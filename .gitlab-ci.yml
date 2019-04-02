@@ -43,10 +43,9 @@ stages:
         docker run --rm --privileged hassioaddons/qemu-user-static:latest
       fi
     - |
-      docker login \
-        --username gitlab-ci-token \
-        --password "${CI_JOB_TOKEN}" \
-        ${GITLAB}
+      echo "${DOCKER_PASSWORD}" | docker login \
+        --username "${DOCKER_LOGIN}" \
+        --password-stdin
     - |
       if [ "${ADDON_QEMU}" = "true" ] && [ "$(apk --print-arch)" = "aarch64" ]; then
         apk --no-cache add curl
@@ -70,9 +69,9 @@ stages:
         --build-arg "BUILD_REF=${CI_COMMIT_SHA}" \
         --build-arg "BUILD_VERSION=${CI_COMMIT_TAG:-${CI_COMMIT_SHA:0:7}}" \
         --tag \
-          "${CI_PROJECT_PATH}/${ADDON_ARCH}:${CI_COMMIT_SHA}" \
+          "${DOCKER_HUB_ORG}/${ADDON_SLUG}-${ADDON_ARCH}:${CI_COMMIT_SHA}" \
         .
-    - docker push "${GITLAB}/${CI_PROJECT_PATH}/${ADDON_ARCH}:${CI_COMMIT_SHA}"
+    - docker push "${DOCKER_HUB_ORG}/${ADDON_SLUG}-${ADDON_ARCH}:${CI_COMMIT_SHA}"
 
 # Generic scan template
 .scan: &scan
@@ -105,14 +104,14 @@ stages:
           exit 1
         fi
       done
-    - docker pull "${GITLAB}/${CI_PROJECT_PATH}/${ADDON_ARCH}:${CI_COMMIT_SHA}"
+    - docker pull "${DOCKER_HUB_ORG}/${CI_PROJECT_PATH}-${ADDON_ARCH}:${CI_COMMIT_SHA}"
   script:
     - |
       clair-scanner \
         -c http://docker:6060 \
         --ip $(hostname -i) \
         -w clair-whitelist.yml \
-        "${GITLAB}/${CI_PROJECT_PATH}/${ADDON_ARCH}:${CI_COMMIT_SHA}"
+        "${DOCKER_HUB_ORG}/${CI_PROJECT_PATH}-${ADDON_ARCH}:${CI_COMMIT_SHA}"
   tags:
     - scan
 
@@ -122,12 +121,7 @@ stages:
   stage: deploy
   before_script:
     - docker info
-    - docker pull "${GITLAB}/${CI_PROJECT_PATH}/${ADDON_ARCH}:${CI_COMMIT_SHA}"
-    - |
-      echo "${CI_JOB_TOKEN}" | docker login \
-        --username gitlab-ci-token \
-        --password-stdin \
-        ${GITLAB}
+    - docker pull "${DOCKER_HUB_ORG}/${CI_PROJECT_PATH}-${ADDON_ARCH}:${CI_COMMIT_SHA}"
     - |
       echo "${DOCKER_PASSWORD}" | docker login \
         --username "${DOCKER_LOGIN}" \
