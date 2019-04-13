@@ -295,16 +295,36 @@ build:armhf:
   <<: *build
   variables:
     ADDON_ARCH: armhf
-    FROM: hassioaddons/base-armhf:latest
+    FROM: armhf/alpine:latest
   tags:
     - build
     - armhf
+
+
+build:arm32v7:
+  <<: *build
+  variables:
+    ADDON_ARCH: arm32v7
+    FROM: arm32v7/alpine:latest
+  tags:
+    - build
+    - arm32v7
+
+
+build:arm32v6:
+  <<: *build
+  variables:
+    ADDON_ARCH: arm32v6
+    FROM: arm32v6/alpine:latest
+  tags:
+    - build
+    - arm32v6
 
 build:aarch64:
   <<: *build
   variables:
     ADDON_ARCH: aarch64
-    FROM: hassioaddons/base-aarch64:latest
+    FROM: aarch64/alpine:latest
   tags:
     - build
     - aarch64
@@ -313,7 +333,7 @@ build:i386:
   <<: *build
   variables:
     ADDON_ARCH: i386
-    FROM: hassioaddons/base-i386:latest
+    FROM: i386/alpine:latest
   tags:
     - build
     - i386
@@ -322,7 +342,7 @@ build:amd64:
   <<: *build
   variables:
     ADDON_ARCH: amd64
-    FROM: hassioaddons/base-amd64:latest
+    FROM: amd64/alpine:latest
   tags:
     - build
     - amd64

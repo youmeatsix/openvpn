@@ -3,6 +3,7 @@
     "version": "0.2.9",
     "slug": "openvpn-client",
     "description": "Connect Hassio to a remote VPN Server",
+    "url": "https://github.com/larsklitzke/homeassistant-openvpn-client",
     "startup": "application",
     "boot": "auto",
     "arch": ["armhf", "armv7", "aarch64", "amd64", "i386"],
@@ -35,5 +36,6 @@
     "ports": {
       "8090/tcp" : 8090
     },
-    "map" : ["share:rw"]
+    "map" : ["share:rw"],
+    "image": "larsklitzke/homeassistant-openvpnclient-{arch}"
   }

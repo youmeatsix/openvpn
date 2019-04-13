@@ -6,6 +6,10 @@ ARG NAME=openvpnclient
 # Add env
 ENV LANG C.UTF-8
 
+RUN uname -a 
+
+RUN ls -la /bin/
+
 # install openvpn package
 RUN apk add --update --no-cache openvpn jq python3 bash python3-dev \
     build-base \
@@ -32,4 +36,4 @@ WORKDIR /$NAME/venv/
 # expose name of working dir to environment
 ENV NAME $NAME
 
-ENTRYPOINT /bin/bash /$NAME/venv/bin/run.sh
+ENTRYPOINT /bin/sh /$NAME/venv/bin/run.sh
