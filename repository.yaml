@@ -1,0 +1,4 @@
+# https://developers.home-assistant.io/docs/add-ons/repository#repository-configuration
+name: OpenVPN
+url: 'https://github.com/youmeatsix/openvpn'
+maintainer: danila <awesome@dani.la>
