@@ -1,0 +1,84 @@
+Certificate:
+    Data:
+        Version: 3 (0x2)
+        Serial Number:
+            8c:1e:18:f5:72:8d:4f:ed:90:fa:c0:09:c8:71:b3:76
+        Signature Algorithm: sha256WithRSAEncryption
+        Issuer: CN=vpn.dani.la
+        Validity
+            Not Before: Oct  7 13:52:23 2023 GMT
+            Not After : Jan  9 13:52:23 2026 GMT
+        Subject: CN=homeassistant
+        Subject Public Key Info:
+            Public Key Algorithm: rsaEncryption
+                RSA Public-Key: (2048 bit)
+                Modulus:
+                    00:b3:d9:71:72:61:09:ee:1b:3a:31:a3:bb:f7:99:
+                    6b:6f:18:3a:78:4f:ff:de:7e:50:bf:7d:65:0f:8c:
+                    f7:87:d5:04:f7:3c:1c:f2:77:35:d9:c5:a9:fe:1e:
+                    15:69:ad:69:fa:e4:87:af:2d:8d:76:f6:d8:b8:43:
+                    d0:fb:b6:ee:ae:cd:83:05:e3:db:5e:c4:0a:70:72:
+                    50:fe:25:12:52:1f:ff:cf:fc:3e:a7:3c:be:eb:a7:
+                    dc:fc:77:f2:84:85:17:20:96:17:69:e2:ff:aa:b5:
+                    91:f2:6b:e0:72:7b:7c:dd:6f:7b:7d:9e:b5:cf:7d:
+                    b9:fa:be:da:07:61:42:81:3d:45:9e:27:81:22:09:
+                    72:5a:3e:d8:5f:fe:3a:0c:9f:81:07:a1:74:09:10:
+                    4b:1c:d4:da:40:d9:ca:f0:35:5c:2d:ff:51:e8:ca:
+                    05:95:ba:06:d7:f5:e6:e1:a3:94:05:f7:1d:48:c1:
+                    91:2d:e1:3f:a8:d9:fc:54:52:66:c5:0f:67:cf:89:
+                    05:be:29:9f:d8:fd:8a:09:c0:5f:8e:f7:30:a1:af:
+                    77:36:f2:31:c3:3b:61:4b:c6:22:9c:e2:d0:5f:25:
+                    ea:5d:89:32:59:80:43:07:68:ac:dc:64:9a:1b:41:
+                    93:6b:96:39:9c:22:2a:d2:3e:fa:02:0e:09:c3:0c:
+                    ec:1d
+                Exponent: 65537 (0x10001)
+        X509v3 extensions:
+            X509v3 Basic Constraints: 
+                CA:FALSE
+            X509v3 Subject Key Identifier: 
+                2D:73:EE:9F:DD:95:60:72:52:D5:04:5E:D1:F6:96:E7:1A:00:EB:9F
+            X509v3 Authority Key Identifier: 
+                keyid:94:FD:43:67:75:0D:F2:DB:06:26:0C:9B:11:E4:A9:B5:F7:AA:05:17
+                DirName:/CN=vpn.dani.la
+                serial:6C:3D:3C:CD:7C:7A:1A:EB:C1:4F:83:D8:8C:D4:C1:9E:7E:ED:AE:05
+
+            X509v3 Extended Key Usage: 
+                TLS Web Client Authentication
+            X509v3 Key Usage: 
+                Digital Signature
+    Signature Algorithm: sha256WithRSAEncryption
+         5a:10:ad:b8:0f:22:32:89:a6:e0:4f:d2:af:d4:c0:a5:00:39:
+         91:3b:70:28:9f:7c:b1:60:41:b3:b8:33:14:00:20:02:a3:9d:
+         01:c2:2d:a2:63:dd:d9:38:01:8a:15:23:3d:37:95:98:31:94:
+         d5:74:26:d8:ed:b3:04:6c:49:8f:8c:ea:78:a6:a7:95:a8:8e:
+         bd:8b:03:60:74:b6:35:b8:59:7e:8d:2b:a1:03:7a:dd:b9:5f:
+         db:de:44:e3:e8:29:32:f3:60:cb:0f:20:a7:f3:b4:2b:63:7e:
+         37:12:99:4c:1b:75:6d:6d:fd:81:b7:29:00:21:78:a1:ce:62:
+         ec:bc:ff:66:97:a0:a8:26:65:37:20:e5:53:4a:e4:b0:95:b4:
+         8a:1d:cc:ca:4f:2f:cc:8e:1a:2e:25:66:b3:90:c1:ab:7c:fc:
+         ef:04:51:a7:0e:a3:db:2a:ad:87:50:56:69:96:47:c5:b7:56:
+         84:6f:61:bd:d0:46:2c:38:f4:7f:8c:c7:fb:04:e8:8d:71:22:
+         d0:7c:1b:7c:a9:71:75:61:24:59:34:f6:a5:94:67:54:18:f7:
+         e4:e9:6a:7c:43:97:56:7b:6e:2d:8a:a4:87:9e:be:f2:7a:1f:
+         c4:7e:f0:81:b8:28:30:95:04:f9:97:5c:98:2a:2e:3c:2f:69:
+         c6:59:e3:97
+-----BEGIN CERTIFICATE-----
+MIIDXDCCAkSgAwIBAgIRAIweGPVyjU/tkPrACchxs3YwDQYJKoZIhvcNAQELBQAw
+FjEUMBIGA1UEAwwLdnBuLmRhbmkubGEwHhcNMjMxMDA3MTM1MjIzWhcNMjYwMTA5
+MTM1MjIzWjAYMRYwFAYDVQQDDA1ob21lYXNzaXN0YW50MIIBIjANBgkqhkiG9w0B
+AQEFAAOCAQ8AMIIBCgKCAQEAs9lxcmEJ7hs6MaO795lrbxg6eE//3n5Qv31lD4z3
+h9UE9zwc8nc12cWp/h4Vaa1p+uSHry2NdvbYuEPQ+7burs2DBePbXsQKcHJQ/iUS
+Uh//z/w+pzy+66fc/HfyhIUXIJYXaeL/qrWR8mvgcnt83W97fZ61z325+r7aB2FC
+gT1FnieBIglyWj7YX/46DJ+BB6F0CRBLHNTaQNnK8DVcLf9R6MoFlboG1/Xm4aOU
+BfcdSMGRLeE/qNn8VFJmxQ9nz4kFvimf2P2KCcBfjvcwoa93NvIxwzthS8YinOLQ
+XyXqXYkyWYBDB2is3GSaG0GTa5Y5nCIq0j76Ag4JwwzsHQIDAQABo4GiMIGfMAkG
+A1UdEwQCMAAwHQYDVR0OBBYEFC1z7p/dlWByUtUEXtH2lucaAOufMFEGA1UdIwRK
+MEiAFJT9Q2d1DfLbBiYMmxHkqbX3qgUXoRqkGDAWMRQwEgYDVQQDDAt2cG4uZGFu
+aS5sYYIUbD08zXx6GuvBT4PYjNTBnn7trgUwEwYDVR0lBAwwCgYIKwYBBQUHAwIw
+CwYDVR0PBAQDAgeAMA0GCSqGSIb3DQEBCwUAA4IBAQBaEK24DyIyiabgT9Kv1MCl
+ADmRO3Aon3yxYEGzuDMUACACo50Bwi2iY93ZOAGKFSM9N5WYMZTVdCbY7bMEbEmP
+jOp4pqeVqI69iwNgdLY1uFl+jSuhA3rduV/b3kTj6Cky82DLDyCn87QrY343EplM
+G3Vtbf2BtykAIXihzmLsvP9ml6CoJmU3IOVTSuSwlbSKHczKTy/MjhouJWazkMGr
+fPzvBFGnDqPbKq2HUFZplkfFt1aEb2G90EYsOPR/jMf7BOiNcSLQfBt8qXF1YSRZ
+NPallGdUGPfk6Wp8Q5dWe24tiqSHnr7yeh/EfvCBuCgwlQT5l1yYKi48L2nGWeOX
+-----END CERTIFICATE-----
